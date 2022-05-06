@@ -43,3 +43,6 @@ RUN curl -sLO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/o
     chmod +x oc && mv oc /usr/local/bin/oc && \
     chmod +x kubectl && mv kubectl /usr/local/bin/kubectl && \
     rm openshift-client-linux.tar.gz
+
+# Clean up yum and dnf artifacts
+RUN rm -rf /var/cache /var/log/dnf* /var/log/yum.*
