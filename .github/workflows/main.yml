@@ -2,7 +2,10 @@
 
 name: build-and-publish
 
-on: [push]
+on: 
+- push
+- schedule:
+  - cron: "00 8 * * 1-5"
 
 jobs:
   build:
