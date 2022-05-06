@@ -3,8 +3,8 @@
 name: build-and-publish
 
 on: 
-- push
-- schedule:
+  push:
+  schedule:
   - cron: "00 8 * * 1-5"
 
 jobs:
