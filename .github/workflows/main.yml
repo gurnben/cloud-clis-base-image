@@ -11,14 +11,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
     - name: Buildah Action
+      id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
        # The name (reference) of the image to build
        image: cloudclisbase
        # The tags of the image to build. For multiple tags, seperate by whitespace. For example, "latest v1".
-       tags: latest
+       tags: latest ${{ steps.date.outputs.date }}
        # List of Containerfile paths (eg: ./Containerfile)
        containerfiles: ./Dockerfile
        
