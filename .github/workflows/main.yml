@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build-and-publish
+
+on: [push]
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Buildah Action
+      uses: redhat-actions/buildah-build@v2
+      with:
+       # The name (reference) of the image to build
+       image: cloudclisbase
+       # The tags of the image to build. For multiple tags, seperate by whitespace. For example, "latest v1".
+       tags: latest
+       # List of Containerfile paths (eg: ./Containerfile)
+       containerfiles: ./Dockerfile
+       
+    - name: Push To quay.io
+      id: push-to-quay
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: quay.io/gurnben
+        username: gurnben
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
