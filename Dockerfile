@@ -8,12 +8,12 @@ WORKDIR $HOME
 RUN microdnf update -y && microdnf install -y tar gzip curl git jq httpd-tools findutils unzip which make wget python3 gcc
 
 # Install golang because we can't have nice things and microdnf install it
-RUN wget "https://dl.google.com/go/$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz" && \
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz && \
+RUN curl "https://dl.google.com/go/$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz" -o go.linux-amd64.tar.gz && \
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go.linux-amd64.tar.gz && \
     echo "export PATH=$PATH:/usr/local/go/bin" >> $HOME/profile && \
     source $HOME/profile && \
-    go version && \
-    rm -rf go1.18.1.linux-amd64.tar.gz;
+    go version
+    # rm -rf go.linux-amd64.tar.gz;
 
 # Install kustomize
 RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
